@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
     f_sys = pygame.font.SysFont('times_new_roman', 54)
     f_population_input = pygame.font.SysFont('times_new_roman', 36)
+    f_start_and_end = pygame.font.SysFont('times_new_roman', round(TILE/4))
 
     # Эволюционный процесс
     while population_number < MAX_POPULATION:
@@ -23,8 +24,7 @@ if __name__ == '__main__':
             if SHOW_EVOLUTION:
                 [cell.draw() for cell in maze.grid_cells]
             else:
-                sc_text = f_sys.render(f'Происходит эволюция', True,
-                                       (255, 255, 255), (0, 0, 0))
+                sc_text = f_sys.render(f'Происходит эволюция', True, (255, 255, 255), (0, 0, 0))
                 population_text = f_population_input.render(f'Популяция {population_number+1}/{MAX_POPULATION}', True,
                                        (255, 255, 255), (0, 0, 0))
                 pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
@@ -42,6 +42,8 @@ if __name__ == '__main__':
                         ind.move_to(ind.choose_next())
                     if SHOW_EVOLUTION:
                         ind.current_cell.draw_current_cell()
+                else:
+                    ind.stack.append(maze[FINISH])
 
             iteration_counter += 1
             if SHOW_EVOLUTION:
@@ -82,21 +84,36 @@ if __name__ == '__main__':
 
         population_number += 1
 
+    # Отбор лучшей особи
+    leader = min(population.individuals, key=lambda indi: indi.individual_fitness)
+
+    # Корректировка пути лучшей особи
+
     # Отрисовка лучшего решения
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
+        # sc_text = f_sys.render(f'Происходит эволюция', True, (255, 255, 255), (0, 0, 0))
+        # pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
+        # sc.blit(sc_text, pos1)
 
-        leader = min(population.individuals, key=lambda indi: indi.individual_fitness)
-
-        for cells in leader.stack:
+        for indx in range(len(leader.stack)-1):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit()
             [cell.draw() for cell in maze.grid_cells]
-            cells.draw_current_cell()
-            cells.visited = False
+            if leader.stack[indx-1]:
+                Individual.draw_the_way(leader.stack[indx-1], leader.stack[indx], leader.stack[indx+1])
+            # leader.stack[indx].draw_current_cell()
+            leader.stack[indx].visited = False
+
+            text_start = f_start_and_end.render(f'START', True, (0, 196, 34), (80, 100, 100))
+            text_finish = f_start_and_end.render(f'FINISH', True, (0, 196, 34), (65, 80, 80))
+            pos_finish = text_finish.get_rect(center=((maze[FINISH].x * TILE) + TILE / 2, (maze[FINISH].y * TILE) + TILE / 2))
+            pos_start = text_start.get_rect(center=((maze[0].x * TILE) + TILE / 2, (maze[0].y * TILE) + TILE / 2))
+            sc.blit(text_start, pos_start)
+            sc.blit(text_finish, pos_finish)
             pygame.display.flip()
             clock.tick(30)
 

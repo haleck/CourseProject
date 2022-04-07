@@ -46,14 +46,79 @@ class Individual:
 
         return choice(possible_cells)
 
-    def move_to(self, next_cell: Cell, add=True):
+    def move_to(self, next_cell: Cell, add=True, draw_the_way=False):
         if self.current_cell == self.maze[FINISH]:
             return
         if add:
             self.stack.append(self.current_cell)
+
         self.route += 1
         self.current_cell = next_cell
         self.current_index = next_cell.find_index(next_cell.x, next_cell.y)
+
+    @staticmethod
+    def draw_the_way(past_cell: Cell, current_cell: Cell, next_cell: Cell, color=(42, 168, 72)):
+        x_past = past_cell.x * TILE
+        y_past = past_cell.y * TILE
+        x_current = current_cell.x * TILE
+        y_current = current_cell.y * TILE
+        x_next = next_cell.x * TILE
+        y_next = next_cell.y * TILE
+
+        coord_center = (x_current + TILE / 2, y_current + TILE / 2)
+        coord_middle_right = (x_current + TILE, y_current + TILE/2)
+        coord_middle_left = (x_current, y_current + TILE/2)
+        coord_middle_top = (x_current + TILE /2, y_current)
+        coord_middle_down = (x_current + TILE /2, y_current + TILE)
+
+        if x_current - x_past == 1 * TILE:
+            if y_current - y_next == 1 * TILE:
+                pygame.draw.line(sc, color, coord_middle_left, coord_center, 2)
+                pygame.draw.line(sc, color, coord_center, coord_middle_top, 2)
+                return
+            if y_current - y_next == -1 * TILE:
+                pygame.draw.line(sc, color, coord_middle_left, coord_center, 2)
+                pygame.draw.line(sc, color, coord_center, coord_middle_down, 2)
+                return
+            if x_past == x_next:
+                return
+            pygame.draw.line(sc, color, coord_middle_left, coord_middle_right, 2)
+        elif x_current - x_past == -1 * TILE:
+            if y_current - y_next == 1 * TILE:
+                pygame.draw.line(sc, color, coord_middle_right, coord_center, 2)
+                pygame.draw.line(sc, color, coord_center, coord_middle_top, 2)
+                return
+            if y_current - y_next == -1 * TILE:
+                pygame.draw.line(sc, color, coord_middle_right, coord_center, 2)
+                pygame.draw.line(sc, color, coord_center, coord_middle_down, 2)
+                return
+            if x_past == x_next:
+                return
+            pygame.draw.line(sc, color, coord_middle_right, coord_middle_left, 2)
+        elif y_current - y_past == 1 * TILE:
+            if x_current - x_next == 1 * TILE:
+                pygame.draw.line(sc, color, coord_middle_top, coord_center, 2)
+                pygame.draw.line(sc, color, coord_center, coord_middle_left, 2)
+                return
+            if x_current - x_next == -1 * TILE:
+                pygame.draw.line(sc, color, coord_middle_top, coord_center, 2)
+                pygame.draw.line(sc, color, coord_center, coord_middle_right, 2)
+                return
+            if y_past == y_next:
+                return
+            pygame.draw.line(sc, color, coord_middle_top, coord_middle_down, 2)
+        elif y_current - y_past == -1 * TILE:
+            if x_current - x_next == 1 * TILE:
+                pygame.draw.line(sc, color, coord_middle_down, coord_center, 2)
+                pygame.draw.line(sc, color, coord_center, coord_middle_left, 2)
+                return
+            if x_current - x_next == -1 * TILE:
+                pygame.draw.line(sc, color, coord_middle_down, coord_center, 2)
+                pygame.draw.line(sc, color, coord_center, coord_middle_right, 2)
+                return
+            if y_past == y_next:
+                return
+            pygame.draw.line(sc, color, coord_middle_down, coord_middle_top, 2)
 
 
 class Population:
@@ -75,9 +140,10 @@ class Population:
         for n in range(p_len):
             i1 = i2 = i3 = 0
             while i1 == i2 or i1 == i3 or i2 == i3:
-                i1, i2, i3 = randint(0, p_len-1), randint(0, p_len-1), randint(0, p_len-1)
+                i1, i2, i3 = randint(0, p_len - 1), randint(0, p_len - 1), randint(0, p_len - 1)
 
-            offspring.append(min([population[i1], population[i2], population[i3]], key=lambda ind: ind.individual_fitness))
+            offspring.append(
+                min([population[i1], population[i2], population[i3]], key=lambda ind: ind.individual_fitness))
 
         return offspring
 
@@ -93,7 +159,8 @@ class Population:
             equal.remove(point1)
             point2 = choice(equal)
             equal.remove(point2)
-            child1.stack[point1:point2], child2.stack[point1:point2] = child2.stack[point1:point2], child1.stack[point1:point2]
+            child1.stack[point1:point2], child2.stack[point1:point2] = child2.stack[point1:point2], child1.stack[
+                                                                                                    point1:point2]
 
     def mut(self, mutant: Individual):
         if random() <= 0.2:
