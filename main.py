@@ -89,6 +89,7 @@ if __name__ == '__main__':
 
     # Корректировка пути лучшей особи
 
+
     # Отрисовка лучшего решения
     while True:
         for event in pygame.event.get():
