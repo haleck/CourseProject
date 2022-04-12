@@ -214,6 +214,3 @@ class Population:
                     mutant.stack = tempest.stack
                     mutant.current_cell = tempest.current_cell
                     mutant.current_index = tempest.current_index
-
-
-
