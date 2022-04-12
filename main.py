@@ -121,3 +121,5 @@ if __name__ == '__main__':
         [cell.draw() for cell in maze]
         pygame.display.flip()
 
+
+

@@ -134,3 +134,5 @@ class Maze:
             current.walls['bottom'] = False
             follow.walls['top'] = False
 
+
+
