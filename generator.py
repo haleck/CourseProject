@@ -133,3 +133,5 @@ class Maze:
         elif dy == -1:
             current.walls['bottom'] = False
             follow.walls['top'] = False
+
+gt
