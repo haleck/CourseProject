@@ -99,6 +99,7 @@ if __name__ == '__main__':
         # pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
         # sc.blit(sc_text, pos1)
 
+
         for indx in range(len(leader.stack)-1):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
