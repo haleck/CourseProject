@@ -121,6 +121,7 @@ class Individual:
             pygame.draw.line(sc, color, coord_middle_down, coord_middle_top, 2)
 
 
+
 class Population:
     def __init__(self, maze):
         self.maze = maze
