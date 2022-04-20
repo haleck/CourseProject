@@ -1,3 +1,5 @@
+import pygame.draw
+
 from genetic import *
 
 if __name__ == '__main__':
@@ -8,7 +10,7 @@ if __name__ == '__main__':
 
     f_sys = pygame.font.SysFont('times_new_roman', 54)
     f_population_input = pygame.font.SysFont('times_new_roman', 36)
-    f_start_and_end = pygame.font.SysFont('times_new_roman', round(TILE/4))
+    f_start_and_end = pygame.font.SysFont('times_new_roman', round(TILE*0.75))
 
     # Эволюционный процесс
     while population_number < MAX_POPULATION:
@@ -114,8 +116,10 @@ if __name__ == '__main__':
                 Individual.draw_the_way(leader.stack[indx-1], leader.stack[indx], leader.stack[indx+1])
             leader.stack[indx].visited = False
 
-            text_start = f_start_and_end.render(f'START', True, (0, 196, 34), (80, 100, 100))
-            text_finish = f_start_and_end.render(f'FINISH', True, (0, 196, 34), (65, 80, 80))
+            pygame.draw.rect(sc, (80, 100, 100), (maze[0].x+1, maze[0].y+1, maze[0].x+TILE-1, maze[0].y+TILE-1))
+            pygame.draw.rect(sc, (65, 80, 80), (maze[FINISH].x * TILE, maze[FINISH].y * TILE, TILE, TILE))
+            text_start = f_start_and_end.render(f'S', True, (0, 196, 34))
+            text_finish = f_start_and_end.render(f'F', True, (0, 196, 34))
             pos_finish = text_finish.get_rect(center=((maze[FINISH].x * TILE) + TILE / 2, (maze[FINISH].y * TILE) + TILE / 2))
             pos_start = text_start.get_rect(center=((maze[0].x * TILE) + TILE / 2, (maze[0].y * TILE) + TILE / 2))
             sc.blit(text_start, pos_start)
