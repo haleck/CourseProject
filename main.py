@@ -46,8 +46,6 @@ if __name__ == '__main__':
                         ind.move_to(ind.choose_next())
                     if SHOW_EVOLUTION:
                         ind.current_cell.draw_current_cell()
-                else:
-                    ind.stack.append(maze[FINISH])
 
             iteration_counter += 1
             if SHOW_EVOLUTION:
