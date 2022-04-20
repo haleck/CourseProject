@@ -1,4 +1,3 @@
-from settings import *
 from generator import *
 from random import choice, randint, random
 
@@ -65,58 +64,56 @@ class Individual:
         x_next = next_cell.x * TILE
         y_next = next_cell.y * TILE
 
-        coord_center = (x_current + TILE / 2, y_current + TILE / 2)
-        coord_middle_right = (x_current + TILE, y_current + TILE/2)
-        coord_middle_left = (x_current, y_current + TILE/2)
-        coord_middle_top = (x_current + TILE /2, y_current)
-        coord_middle_down = (x_current + TILE /2, y_current + TILE)
-        if x_past == x_next and y_past == y_next:
+        center = (x_current + TILE / 2, y_current + TILE / 2)
+        right = (x_current + TILE, y_current + TILE / 2)
+        left = (x_current, y_current + TILE / 2)
+        top = (x_current + TILE / 2, y_current)
+        down = (x_current + TILE / 2, y_current + TILE)
+
+        line_width = 3
+
+        def draw_line_to_center(start_point):
+            pygame.draw.line(sc, color, start_point, center, line_width)
+
+        def draw_line_to_end_point(end_point):
+            pygame.draw.line(sc, color, center, end_point, line_width)
             return
 
-        if x_current - x_past == 1 * TILE:
-            pygame.draw.line(sc, color, coord_middle_left, coord_center, 2)
-            if y_current - y_next == 1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_top, 2)
-                return
-            if y_current - y_next == -1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_down, 2)
-                return
-            if x_current - x_next == -1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_right, 2)
-                return
-        elif x_current - x_past == -1 * TILE:
-            pygame.draw.line(sc, color, coord_middle_right, coord_center, 2)
-            if y_current - y_next == 1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_top, 2)
-                return
-            if y_current - y_next == -1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_down, 2)
-                return
-            if x_current - x_next == 1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_left, 2)
-                return
-        elif y_current - y_past == 1 * TILE:
-            pygame.draw.line(sc, color, coord_middle_top, coord_center, 2)
-            if x_current - x_next == 1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_left, 2)
-                return
-            if x_current - x_next == -1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_right, 2)
-                return
-            if y_current - y_next == -1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_down, 2)
-                return
-        elif y_current - y_past == -1 * TILE:
-            pygame.draw.line(sc, color, coord_middle_down, coord_center, 2)
-            if x_current - x_next == 1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_left, 2)
-                return
-            if x_current - x_next == -1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_right, 2)
-                return
-            if y_current - y_next == 1 * TILE:
-                pygame.draw.line(sc, color, coord_center, coord_middle_top, 2)
-                return
+        if x_current - x_past == TILE:
+            draw_line_to_center(left)
+            if y_current - y_next == TILE:
+                draw_line_to_end_point(top)
+            if y_current - y_next == -TILE:
+                draw_line_to_end_point(down)
+            if x_current - x_next == -TILE:
+                draw_line_to_end_point(right)
+
+        if x_current - x_past == -TILE:
+            draw_line_to_center(right)
+            if y_current - y_next == TILE:
+                draw_line_to_end_point(top)
+            if y_current - y_next == -TILE:
+                draw_line_to_end_point(down)
+            if x_current - x_next == TILE:
+                draw_line_to_end_point(left)
+
+        if y_current - y_past == TILE:
+            draw_line_to_center(top)
+            if x_current - x_next == TILE:
+                draw_line_to_end_point(left)
+            if x_current - x_next == -TILE:
+                draw_line_to_end_point(right)
+            if y_current - y_next == -TILE:
+                draw_line_to_end_point(down)
+
+        if y_current - y_past == -TILE:
+            draw_line_to_center(down)
+            if x_current - x_next == TILE:
+                draw_line_to_end_point(left)
+            if x_current - x_next == -TILE:
+                draw_line_to_end_point(right)
+            if y_current - y_next == TILE:
+                draw_line_to_end_point(top)
 
 
 class Population:
