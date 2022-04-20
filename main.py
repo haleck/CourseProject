@@ -87,7 +87,13 @@ if __name__ == '__main__':
     # Отбор лучшей особи
     leader = min(population.individuals, key=lambda indi: indi.individual_fitness)
 
-    # Корректировка пути лучшей особи
+    # Удаление нулевых движений
+    i = 0
+    while i < len(leader.stack)-1:
+        if leader.stack[i] == leader.stack[i+1]:
+            leader.stack = leader.stack[:i] + leader.stack[i+1:]
+        else:
+            i += 1
 
     # Отрисовка лучшего решения
     while True:
@@ -106,7 +112,6 @@ if __name__ == '__main__':
             [cell.draw() for cell in maze.grid_cells]
             if leader.stack[indx-1]:
                 Individual.draw_the_way(leader.stack[indx-1], leader.stack[indx], leader.stack[indx+1])
-            # leader.stack[indx].draw_current_cell()
             leader.stack[indx].visited = False
 
             text_start = f_start_and_end.render(f'START', True, (0, 196, 34), (80, 100, 100))

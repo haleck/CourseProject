@@ -70,55 +70,53 @@ class Individual:
         coord_middle_left = (x_current, y_current + TILE/2)
         coord_middle_top = (x_current + TILE /2, y_current)
         coord_middle_down = (x_current + TILE /2, y_current + TILE)
+        if x_past == x_next and y_past == y_next:
+            return
 
         if x_current - x_past == 1 * TILE:
+            pygame.draw.line(sc, color, coord_middle_left, coord_center, 2)
             if y_current - y_next == 1 * TILE:
-                pygame.draw.line(sc, color, coord_middle_left, coord_center, 2)
                 pygame.draw.line(sc, color, coord_center, coord_middle_top, 2)
                 return
             if y_current - y_next == -1 * TILE:
-                pygame.draw.line(sc, color, coord_middle_left, coord_center, 2)
                 pygame.draw.line(sc, color, coord_center, coord_middle_down, 2)
                 return
-            if x_past == x_next:
+            if x_current - x_next == -1 * TILE:
+                pygame.draw.line(sc, color, coord_center, coord_middle_right, 2)
                 return
-            pygame.draw.line(sc, color, coord_middle_left, coord_middle_right, 2)
         elif x_current - x_past == -1 * TILE:
+            pygame.draw.line(sc, color, coord_middle_right, coord_center, 2)
             if y_current - y_next == 1 * TILE:
-                pygame.draw.line(sc, color, coord_middle_right, coord_center, 2)
                 pygame.draw.line(sc, color, coord_center, coord_middle_top, 2)
                 return
             if y_current - y_next == -1 * TILE:
-                pygame.draw.line(sc, color, coord_middle_right, coord_center, 2)
                 pygame.draw.line(sc, color, coord_center, coord_middle_down, 2)
                 return
-            if x_past == x_next:
+            if x_current - x_next == 1 * TILE:
+                pygame.draw.line(sc, color, coord_center, coord_middle_left, 2)
                 return
-            pygame.draw.line(sc, color, coord_middle_right, coord_middle_left, 2)
         elif y_current - y_past == 1 * TILE:
+            pygame.draw.line(sc, color, coord_middle_top, coord_center, 2)
             if x_current - x_next == 1 * TILE:
-                pygame.draw.line(sc, color, coord_middle_top, coord_center, 2)
                 pygame.draw.line(sc, color, coord_center, coord_middle_left, 2)
                 return
             if x_current - x_next == -1 * TILE:
-                pygame.draw.line(sc, color, coord_middle_top, coord_center, 2)
                 pygame.draw.line(sc, color, coord_center, coord_middle_right, 2)
                 return
-            if y_past == y_next:
+            if y_current - y_next == -1 * TILE:
+                pygame.draw.line(sc, color, coord_center, coord_middle_down, 2)
                 return
-            pygame.draw.line(sc, color, coord_middle_top, coord_middle_down, 2)
         elif y_current - y_past == -1 * TILE:
+            pygame.draw.line(sc, color, coord_middle_down, coord_center, 2)
             if x_current - x_next == 1 * TILE:
-                pygame.draw.line(sc, color, coord_middle_down, coord_center, 2)
                 pygame.draw.line(sc, color, coord_center, coord_middle_left, 2)
                 return
             if x_current - x_next == -1 * TILE:
-                pygame.draw.line(sc, color, coord_middle_down, coord_center, 2)
                 pygame.draw.line(sc, color, coord_center, coord_middle_right, 2)
                 return
-            if y_past == y_next:
+            if y_current - y_next == 1 * TILE:
+                pygame.draw.line(sc, color, coord_center, coord_middle_top, 2)
                 return
-            pygame.draw.line(sc, color, coord_middle_down, coord_middle_top, 2)
 
 
 class Population:
