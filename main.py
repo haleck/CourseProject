@@ -5,25 +5,35 @@ if __name__ == '__main__':
     surface = pygame.display.set_mode((WIDTH, HEIGHT))
     MAIN_THEME = pygame_menu.themes.THEME_DARK.copy()
 
-
     def save_number_population(value):
+        print('Change in save_number_population')
         global MAX_POPULATION
         MAX_POPULATION = value
 
-
     def save_population_size(value):
+        print('Change in save_population_size')
         global POPULATION_SIZE
         POPULATION_SIZE = value
 
-
     def save_p_crossover(value):
+        print('Change in save_p_crossover')
         global P_CROSSOVER
-        P_CROSSOVER = value
-
+        P_CROSSOVER = value*0.1
 
     def save_p_mutation(value):
+        print('Change in save_p_mutation')
         global P_MUTATION
-        P_MUTATION = value
+        P_MUTATION = value*0.1
+
+    def save_evolution_show_mode(*value: tuple):
+        print('Change in save_evolution_show_mode')
+        global SHOW_EVOLUTION
+        SHOW_EVOLUTION = True if value[1] == 2 else False
+
+    def save_generation_show_mode(*value: tuple):
+        print('Change in save_generation_show_mode')
+        global SHOW_MAZE_GENERATION
+        SHOW_MAZE_GENERATION = True if value[1] == 2 else False
 
 
     menu = pygame_menu.Menu('Settings', WIDTH, HEIGHT, theme=MAIN_THEME)
@@ -51,8 +61,17 @@ if __name__ == '__main__':
                         maxchar=1, default=str(int(P_MUTATION * 10)),
                         onchange=save_p_mutation)
 
+    menu.add.selector('Show evolution : ', [('OFF', 1), ('ON', 2)], onchange=save_evolution_show_mode)
+    menu.add.selector('Show maze generation : ', [('OFF', 1), ('ON', 2)], onchange=save_generation_show_mode)
+
 
     def start_the_game():
+        MAX_ITERATION = POPULATION_SIZE / TILE * 100
+        print('Value of MAX_POPULATION:', MAX_POPULATION)
+        print('Value of POPULATION_SIZE:', POPULATION_SIZE)
+        print('Value of P_CROSSOVER:', P_CROSSOVER)
+        print('Value of P_MUTATION:', P_MUTATION)
+        print('Value of MAX_ITERATION:', MAX_ITERATION)
         maze = Maze(show=SHOW_MAZE_GENERATION)
         population = Population(maze)
         fitnessValues = [individual.individual_fitness for individual in population.individuals]
@@ -61,6 +80,7 @@ if __name__ == '__main__':
         # Определение шрифтов
         f_sys = pygame.font.SysFont('times_new_roman', 54)
         f_population_input = pygame.font.SysFont('times_new_roman', 36)
+        f_iteration_input = pygame.font.SysFont('times_new_roman', 28)
         f_start_and_end = pygame.font.SysFont('times_new_roman', round(TILE * 0.75))
 
         # Эволюционный процесс
@@ -79,16 +99,41 @@ if __name__ == '__main__':
                 if SHOW_EVOLUTION:
                     [cell.draw() for cell in maze.grid_cells]
                 else:
-                    sc_text = f_sys.render(f'Происходит эволюция', True, (255, 255, 255), (0, 0, 0))
-                    population_text = f_population_input.render(f'Популяция {population_number + 1}/{MAX_POPULATION}',
-                                                                True,
-                                                                (255, 255, 255), (0, 0, 0))
-                    pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
-                    pos2 = population_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30))
-                    sc.fill((0, 0, 0))
-                    sc.blit(sc_text, pos1)
-                    sc.blit(population_text, pos2)
-                    pygame.display.flip()
+                    if population_number > 0:
+                        sc_text = f_sys.render(f'Individual development', True, (255, 255, 255), (0, 0, 0))
+                        population_text = f_population_input.render(f'Population {population_number + 1}/{MAX_POPULATION}',
+                                                                    True,
+                                                                    (255, 255, 255), (0, 0, 0))
+                        iteration_text = f_iteration_input.render(
+                            f'Step {iteration_counter + 1}/{round(MAX_ITERATION)}',
+                            True,
+                            (255, 255, 255), (0, 0, 0))
+                        pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
+                        pos2 = population_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30))
+                        pos3 = iteration_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 80))
+                        sc.fill((0, 0, 0))
+                        sc.blit(sc_text, pos1)
+                        sc.blit(population_text, pos2)
+                        sc.blit(iteration_text, pos3)
+                        pygame.display.flip()
+                    else:
+                        sc_text = f_sys.render(f'Individuals learning', True, (255, 255, 255), (0, 0, 0))
+                        population_text = f_population_input.render(
+                            f'Population {population_number + 1}/{MAX_POPULATION}',
+                            True,
+                            (255, 255, 255), (0, 0, 0))
+                        iteration_text = f_iteration_input.render(
+                            f'Step {iteration_counter + 1}/{round(MAX_ITERATION)}',
+                            True,
+                            (255, 255, 255), (0, 0, 0))
+                        pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
+                        pos2 = population_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30))
+                        pos3 = iteration_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 80))
+                        sc.fill((0, 0, 0))
+                        sc.blit(sc_text, pos1)
+                        sc.blit(population_text, pos2)
+                        sc.blit(iteration_text, pos3)
+                        pygame.display.flip()
 
                 # Определение следующего шага для каждой особи
                 for ind in population.individuals:
