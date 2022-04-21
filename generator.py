@@ -5,7 +5,9 @@ from random import choice
 pygame.init()
 sc = pygame.display.set_mode(RES)
 clock = pygame.time.Clock()
-pygame.display.set_caption('Они искали выход')
+pygame.display.set_caption('Maze solver')
+pygame_icon = pygame.image.load('img/logo.png')
+pygame.display.set_icon(pygame_icon)
 
 
 class Cell:
