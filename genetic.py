@@ -48,7 +48,7 @@ class Individual:
     def move_to(self, next_cell: Cell, add=True, draw_the_way=False):
         if self.current_cell == self.maze[FINISH]:
             return
-        if add:
+        if add and self.current_cell != self.maze[0]:
             self.stack.append(self.current_cell)
 
         self.route += 1
