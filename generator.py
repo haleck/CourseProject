@@ -89,6 +89,7 @@ class Maze:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         exit()
+                sc.fill((5, 5, 5))
                 [cell.draw() for cell in self.grid_cells]
                 self.current_cell.draw_current_cell()
                 clock.tick(5550)

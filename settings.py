@@ -13,3 +13,4 @@ P_MUTATION = 0.3
 
 # Animation settings
 SHOW_EVOLUTION = False
+SHOW_MAZE_GENERATION = False

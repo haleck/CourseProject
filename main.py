@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
 
     def start_the_game():
-        maze = Maze(show=False)
+        maze = Maze(show=SHOW_MAZE_GENERATION)
         population = Population(maze)
         fitnessValues = [individual.individual_fitness for individual in population.individuals]
         population_number = 0
