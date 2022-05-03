@@ -119,7 +119,7 @@ class Individual:
 class Population:
     def __init__(self, maze):
         self.maze = maze
-        self.individuals = [Individual(maze) for i in range(POPULATION_SIZE)]
+        self.individuals = [Individual(maze) for i in range(DEFAULT_POPULATION_SIZE)]
 
     def clone(self, individual: Individual):
         new_fly = Individual(self.maze)
