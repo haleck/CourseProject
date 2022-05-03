@@ -20,7 +20,7 @@ class Cell:
     def draw_current_cell(self, color=(42, 168, 72)):
         x = self.x * TILE
         y = self.y * TILE
-        pygame.draw.rect(sc, pygame.Color(color), (x + 8, y + 8, TILE - 16, TILE - 16))
+        pygame.draw.rect(sc, pygame.Color(color), (x + 8, y + 8 + TOP_PADDING, TILE - 16, TILE - 16))
 
     def draw(self):
         x = self.x * TILE
@@ -90,9 +90,10 @@ class Maze:
                     if event.type == pygame.QUIT:
                         exit()
                 sc.fill((5, 5, 5))
+                pygame.draw.rect(sc, (47, 48, 51), (0, 0, WIDTH, TOP_PADDING))
                 [cell.draw() for cell in self.grid_cells]
                 self.current_cell.draw_current_cell()
-                clock.tick(5550)
+                clock.tick(9999)
                 pygame.display.flip()
 
     def __call__(self, *args, **kwargs):
