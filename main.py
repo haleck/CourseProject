@@ -2,7 +2,7 @@ import pygame_menu
 from genetic import *
 
 if __name__ == '__main__':
-    surface = pygame.display.set_mode((WIDTH, HEIGHT))
+    surface = pygame.display.set_mode(RES)
     MAIN_THEME = pygame_menu.themes.THEME_DARK.copy()
 
     def save_number_population(value):
@@ -36,7 +36,7 @@ if __name__ == '__main__':
         SHOW_MAZE_GENERATION = True if value[1] == 2 else False
 
 
-    menu = pygame_menu.Menu('Settings', WIDTH, HEIGHT, theme=MAIN_THEME)
+    menu = pygame_menu.Menu('Settings', WIDTH, HEIGHT+TOP_PADDING, theme=MAIN_THEME)
 
     menu.add.text_input('Number of populations: ',
                         input_type=pygame_menu.locals.INPUT_INT,
@@ -85,13 +85,13 @@ if __name__ == '__main__':
 
         # Отрисовка процесса популяции при выключенной анимации
         def show_population_progress():
-            sc_text = f_sys.render(f'Individual development', True, (255, 255, 255), (0, 0, 0))
-            population_text = f_population_input.render(f'Population {population_number + 1}/{MAX_POPULATION}', True,(255, 255, 255), (0, 0, 0))
-            iteration_text = f_iteration_input.render(f'Step {iteration_counter + 1}/{round(MAX_ITERATION)}', True,(255, 255, 255), (0, 0, 0))
+            sc_text = f_sys.render(f'Individual development', True, (255, 255, 255), MAIN_BG)
+            population_text = f_population_input.render(f'Population {population_number + 1}/{MAX_POPULATION}', True,(255, 255, 255), MAIN_BG)
+            iteration_text = f_iteration_input.render(f'Step {iteration_counter + 1}/{round(MAX_ITERATION)}', True,(255, 255, 255), MAIN_BG)
             pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
             pos2 = population_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30))
             pos3 = iteration_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 80))
-            sc.fill((0, 0, 0))
+            sc.fill(MAIN_BG)
             sc.blit(sc_text, pos1)
             sc.blit(population_text, pos2)
             sc.blit(iteration_text, pos3)
@@ -99,12 +99,12 @@ if __name__ == '__main__':
 
         # Отрисовка точек конца и начала лабиринта
         def show_end_and_start_points():
-            pygame.draw.rect(sc, (80, 100, 100),(maze[0].x + 1, maze[0].y + 1, maze[0].x + TILE - 1, maze[0].y + TILE - 1))
-            pygame.draw.rect(sc, (65, 80, 80), (maze[FINISH].x * TILE + 1, maze[FINISH].y * TILE + 1, TILE, TILE))
+            pygame.draw.rect(sc, (80, 100, 100),(maze[0].x + 1, maze[0].y + 1 + TOP_PADDING, maze[0].x + TILE - 1, maze[0].y + TILE - 1))
+            pygame.draw.rect(sc, (65, 80, 80), (maze[FINISH].x * TILE + 1, maze[FINISH].y * TILE + 1 + TOP_PADDING, TILE, TILE))
             text_start = f_start_and_end.render(f'S', True, (0, 196, 34))
             text_finish = f_start_and_end.render(f'F', True, (0, 196, 34))
-            pos_finish = text_finish.get_rect(center=((maze[FINISH].x * TILE) + TILE / 2, (maze[FINISH].y * TILE) + TILE / 2))
-            pos_start = text_start.get_rect(center=((maze[0].x * TILE) + TILE / 2, (maze[0].y * TILE) + TILE / 2))
+            pos_finish = text_finish.get_rect(center=((maze[FINISH].x * TILE) + TILE / 2, (maze[FINISH].y * TILE) + TILE / 2 + TOP_PADDING))
+            pos_start = text_start.get_rect(center=((maze[0].x * TILE) + TILE / 2, (maze[0].y * TILE) + TILE / 2 + TOP_PADDING))
             sc.blit(text_start, pos_start)
             sc.blit(text_finish, pos_finish)
 
@@ -167,9 +167,6 @@ if __name__ == '__main__':
 
             population.individuals[:] = offspring
 
-            print('10 случайных значений длины пути из популяции:')
-            print([population.individuals[i].route for i in range(10)])
-
             # Индивидуумы ставятся на начальную позицию
             for ind in population.individuals:
                 ind.route = 0
@@ -204,6 +201,9 @@ if __name__ == '__main__':
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         exit()
+
+                # Отрисовка элементов верхнего меню
+                pygame.draw.rect(sc, (47, 48, 51), (0, 0, WIDTH, TOP_PADDING))
 
                 # Отрисовка движения лучшей особи
                 [cell.draw() for cell in maze.grid_cells]

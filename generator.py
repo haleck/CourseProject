@@ -24,18 +24,18 @@ class Cell:
 
     def draw(self):
         x = self.x * TILE
-        y = self.y * TILE
+        y = self.y * TILE + TOP_PADDING
         if self.visited:
-            pygame.draw.rect(sc, pygame.Color('black'), (x, y, TILE, TILE))
+            pygame.draw.rect(sc, MAIN_BG, (x, y, TILE, TILE))
 
         if self.walls['top']:
-            pygame.draw.line(sc, pygame.Color('darkorange'), (x, y), (x + TILE, y), 1)
+            pygame.draw.line(sc, STROKE_COLOR, (x, y), (x + TILE, y), 1)
         if self.walls['right']:
-            pygame.draw.line(sc, pygame.Color('darkorange'), (x + TILE, y), (x + TILE, y + TILE), 1)
+            pygame.draw.line(sc, STROKE_COLOR, (x + TILE, y), (x + TILE, y + TILE), 1)
         if self.walls['bottom']:
-            pygame.draw.line(sc, pygame.Color('darkorange'), (x, y + TILE), (x + TILE, y + TILE), 1)
+            pygame.draw.line(sc, STROKE_COLOR, (x, y + TILE), (x + TILE, y + TILE), 1)
         if self.walls['left']:
-            pygame.draw.line(sc, pygame.Color('darkorange'), (x, y), (x, y + TILE), 1)
+            pygame.draw.line(sc, STROKE_COLOR, (x, y), (x, y + TILE), 1)
 
     @staticmethod
     def find_index(x, y):

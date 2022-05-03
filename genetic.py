@@ -58,11 +58,11 @@ class Individual:
     @staticmethod
     def draw_the_way(past_cell: Cell, current_cell: Cell, next_cell: Cell, color=(42, 168, 72)):
         x_past = past_cell.x * TILE
-        y_past = past_cell.y * TILE
+        y_past = past_cell.y * TILE + TOP_PADDING
         x_current = current_cell.x * TILE
-        y_current = current_cell.y * TILE
+        y_current = current_cell.y * TILE + TOP_PADDING
         x_next = next_cell.x * TILE
-        y_next = next_cell.y * TILE
+        y_next = next_cell.y * TILE + TOP_PADDING
 
         center = (x_current + TILE / 2, y_current + TILE / 2)
         right = (x_current + TILE, y_current + TILE / 2)
