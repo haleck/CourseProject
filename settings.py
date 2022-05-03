@@ -1,9 +1,14 @@
-# Animation settings
+# Visual settings
 SHOW_EVOLUTION = False
 SHOW_MAZE_GENERATION = False
 TOP_PADDING = 50
 MAIN_BG = (35, 36, 30)
 STROKE_COLOR = (90, 89, 88)
+HEADER_COLOR = (47, 48, 51)
+ACTIVE_COLOR = (42, 168, 72)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+FONT = 'antialias'
 
 # Settings of the screen
 WIDTH, HEIGHT = 1200, 881

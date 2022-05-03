@@ -56,7 +56,7 @@ class Individual:
         self.current_index = next_cell.find_index(next_cell.x, next_cell.y)
 
     @staticmethod
-    def draw_the_way(past_cell: Cell, current_cell: Cell, next_cell: Cell, color=(42, 168, 72)):
+    def draw_the_way(past_cell: Cell, current_cell: Cell, next_cell: Cell, color=ACTIVE_COLOR):
         x_past = past_cell.x * TILE
         y_past = past_cell.y * TILE + TOP_PADDING
         x_current = current_cell.x * TILE

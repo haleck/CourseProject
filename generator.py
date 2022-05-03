@@ -17,7 +17,7 @@ class Cell:
         self.walls = {'top': True, 'right': True, 'bottom': True, 'left': True}
         self.visited = False
 
-    def draw_current_cell(self, color=(42, 168, 72)):
+    def draw_current_cell(self, color=ACTIVE_COLOR):
         x = self.x * TILE
         y = self.y * TILE
         pygame.draw.rect(sc, pygame.Color(color), (x + 8, y + 8 + TOP_PADDING, TILE - 16, TILE - 16))
