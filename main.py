@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
 
     def start_the_game():
-        MAX_ITERATION = POPULATION_SIZE / TILE * 100
+        MAX_ITERATION = POPULATION_SIZE / TILE * 120
         print('Value of MAX_POPULATION:', MAX_POPULATION)
         print('Value of POPULATION_SIZE:', POPULATION_SIZE)
         print('Value of P_CROSSOVER:', P_CROSSOVER)
@@ -82,6 +82,31 @@ if __name__ == '__main__':
         f_population_input = pygame.font.SysFont('times_new_roman', 36)
         f_iteration_input = pygame.font.SysFont('times_new_roman', 28)
         f_start_and_end = pygame.font.SysFont('times_new_roman', round(TILE * 0.75))
+
+        # Отрисовка процесса популяции при выключенной анимации
+        def show_population_progress():
+            sc_text = f_sys.render(f'Individual development', True, (255, 255, 255), (0, 0, 0))
+            population_text = f_population_input.render(f'Population {population_number + 1}/{MAX_POPULATION}', True,(255, 255, 255), (0, 0, 0))
+            iteration_text = f_iteration_input.render(f'Step {iteration_counter + 1}/{round(MAX_ITERATION)}', True,(255, 255, 255), (0, 0, 0))
+            pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
+            pos2 = population_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30))
+            pos3 = iteration_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 80))
+            sc.fill((0, 0, 0))
+            sc.blit(sc_text, pos1)
+            sc.blit(population_text, pos2)
+            sc.blit(iteration_text, pos3)
+            pygame.display.flip()
+
+        # Отрисовка точек конца и начала лабиринта
+        def show_end_and_start_points():
+            pygame.draw.rect(sc, (80, 100, 100),(maze[0].x + 1, maze[0].y + 1, maze[0].x + TILE - 1, maze[0].y + TILE - 1))
+            pygame.draw.rect(sc, (65, 80, 80), (maze[FINISH].x * TILE + 1, maze[FINISH].y * TILE + 1, TILE, TILE))
+            text_start = f_start_and_end.render(f'S', True, (0, 196, 34))
+            text_finish = f_start_and_end.render(f'F', True, (0, 196, 34))
+            pos_finish = text_finish.get_rect(center=((maze[FINISH].x * TILE) + TILE / 2, (maze[FINISH].y * TILE) + TILE / 2))
+            pos_start = text_start.get_rect(center=((maze[0].x * TILE) + TILE / 2, (maze[0].y * TILE) + TILE / 2))
+            sc.blit(text_start, pos_start)
+            sc.blit(text_finish, pos_finish)
 
         # Эволюционный процесс
         while population_number < MAX_POPULATION:
@@ -99,41 +124,7 @@ if __name__ == '__main__':
                 if SHOW_EVOLUTION:
                     [cell.draw() for cell in maze.grid_cells]
                 else:
-                    if population_number > 0:
-                        sc_text = f_sys.render(f'Individual development', True, (255, 255, 255), (0, 0, 0))
-                        population_text = f_population_input.render(f'Population {population_number + 1}/{MAX_POPULATION}',
-                                                                    True,
-                                                                    (255, 255, 255), (0, 0, 0))
-                        iteration_text = f_iteration_input.render(
-                            f'Step {iteration_counter + 1}/{round(MAX_ITERATION)}',
-                            True,
-                            (255, 255, 255), (0, 0, 0))
-                        pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
-                        pos2 = population_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30))
-                        pos3 = iteration_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 80))
-                        sc.fill((0, 0, 0))
-                        sc.blit(sc_text, pos1)
-                        sc.blit(population_text, pos2)
-                        sc.blit(iteration_text, pos3)
-                        pygame.display.flip()
-                    else:
-                        sc_text = f_sys.render(f'Individuals learning', True, (255, 255, 255), (0, 0, 0))
-                        population_text = f_population_input.render(
-                            f'Population {population_number + 1}/{MAX_POPULATION}',
-                            True,
-                            (255, 255, 255), (0, 0, 0))
-                        iteration_text = f_iteration_input.render(
-                            f'Step {iteration_counter + 1}/{round(MAX_ITERATION)}',
-                            True,
-                            (255, 255, 255), (0, 0, 0))
-                        pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
-                        pos2 = population_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30))
-                        pos3 = iteration_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 80))
-                        sc.fill((0, 0, 0))
-                        sc.blit(sc_text, pos1)
-                        sc.blit(population_text, pos2)
-                        sc.blit(iteration_text, pos3)
-                        pygame.display.flip()
+                    show_population_progress()
 
                 # Определение следующего шага для каждой особи
                 for ind in population.individuals:
@@ -149,6 +140,7 @@ if __name__ == '__main__':
 
                 iteration_counter += 1
                 if SHOW_EVOLUTION:
+                    show_end_and_start_points()
                     pygame.display.flip()
 
             print('----------------------------------------------------------------')
@@ -220,16 +212,7 @@ if __name__ == '__main__':
                 leader.stack[indx].visited = False
 
                 # Отрисовка точек конца и начала лабиринта
-                pygame.draw.rect(sc, (80, 100, 100),
-                                 (maze[0].x + 1, maze[0].y + 1, maze[0].x + TILE - 1, maze[0].y + TILE - 1))
-                pygame.draw.rect(sc, (65, 80, 80), (maze[FINISH].x * TILE + 1, maze[FINISH].y * TILE + 1, TILE, TILE))
-                text_start = f_start_and_end.render(f'S', True, (0, 196, 34))
-                text_finish = f_start_and_end.render(f'F', True, (0, 196, 34))
-                pos_finish = text_finish.get_rect(
-                    center=((maze[FINISH].x * TILE) + TILE / 2, (maze[FINISH].y * TILE) + TILE / 2))
-                pos_start = text_start.get_rect(center=((maze[0].x * TILE) + TILE / 2, (maze[0].y * TILE) + TILE / 2))
-                sc.blit(text_start, pos_start)
-                sc.blit(text_finish, pos_finish)
+                show_end_and_start_points()
 
                 # Смена кадра
                 pygame.display.flip()
