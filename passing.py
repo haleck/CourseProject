@@ -60,11 +60,6 @@ class MazeSolver:
             pos_text_processing = text_processing.get_rect(center=(WIDTH / 2, TOP_PADDING / 2))
             sc.blit(text_processing, pos_text_processing)
 
-        # Открытие окна статистики прохождения лабаринта
-        def open_stat_window():
-            stats = StatSurface(self.avg_values)
-            stats.draw()
-
         # Выполнение шагов всеми индивидуумами
         def iteration_loop():
             # Отрисовка процесса популяции при выключенной анимации
@@ -185,11 +180,19 @@ class MazeSolver:
                             return
                         if WIDTH / 10 * 3.3333 + 5 <= event.pos[0] <= WIDTH / 10 * 6.6666 - 5 and 5 <= event.pos[1] <= TOP_PADDING - 10:
                             self.__solution_drawn = True
-                            opened = False
                             draw_the_solution()
                             return
                         if WIDTH / 10 * 6.6666 + 5 <= event.pos[0] <= WIDTH - 5 and 5 <= event.pos[1] <= TOP_PADDING - 10:
-                            open_stat_window()
+                            # Открытие окна статистики прохождения лабаринта
+                            stats = StatSurface(self.avg_values)
+                            callback = stats.draw()
+                            if callback == 'exit':
+                                MazeSolver.__init__(self, self.__MAX_POPULATION, self.__POPULATION_SIZE, self.__P_CROSSOVER, self.__P_MUTATION)
+                                return
+                            if callback == 'back':
+                                self.__solution_drawn = True
+                                draw_the_solution()
+                                return
 
                 if not_drawn:
                     n_dots = 0

@@ -68,6 +68,11 @@ class StatSurface:
                 if event.type == pygame.QUIT:
                     stop = True
                     exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if 5 <= event.pos[0] <= WIDTH // 3 and 5 <= event.pos[1] <= TOP_PADDING - 10:
+                        return 'back'
+                    if WIDTH / 10 * 6.6666 + 5 <= event.pos[0] <= WIDTH - 5 and 5 <= event.pos[1] <= TOP_PADDING - 10:
+                        return 'exit'
             self.draw_header()
             pygame.display.update()
             pygame.time.Clock().tick(30)
