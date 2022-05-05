@@ -48,7 +48,7 @@ class MazeSolver:
         print('Value of MAX_ITERATION:', self.__MAX_ITERATION)
 
     def start_passing(self):
-        self.__MAX_ITERATION = self.__POPULATION_SIZE / TILE * 120
+        self.__MAX_ITERATION = 1/TILE**0.95 * 12500
         self.__maze = Maze(show=self.__SHOW_MAZE_GENERATION)
         self.__population = Population(self.__maze)
         self.fitnessValues = [individual.individual_fitness for individual in self.__population.individuals]
@@ -184,7 +184,7 @@ class MazeSolver:
                             return
                         if WIDTH / 10 * 6.6666 + 5 <= event.pos[0] <= WIDTH - 5 and 5 <= event.pos[1] <= TOP_PADDING - 10:
                             # Открытие окна статистики прохождения лабаринта
-                            stats = StatSurface(self.avg_values)
+                            stats = StatSurface(self.avg_values, leader)
                             callback = stats.draw()
                             if callback == 'exit':
                                 MazeSolver.__init__(self, self.__MAX_POPULATION, self.__POPULATION_SIZE, self.__P_CROSSOVER, self.__P_MUTATION)
@@ -220,6 +220,7 @@ class MazeSolver:
 
                         # Смена кадра
                         pygame.display.flip()
+                        pygame.time.Clock().tick(30)
 
                 not_drawn = False
 
