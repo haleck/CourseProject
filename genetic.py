@@ -182,30 +182,9 @@ class Population:
                         found = True
 
             if index1 and index2:
-                bug = 0
                 if index2 < index1:
                     index1, index2 = index2, index1
 
                 mutant_part_1 = mutant.stack[:index1]
                 mutant_part_2 = mutant.stack[index2:]
-                changed = False
-                tempest = Individual(self.maze)
-                tempest.stack = mutant_part_1
-                tempest.current_cell = tempest.stack[-1]
-                tempest.current_index = Cell.find_index(tempest.current_cell.x, tempest.current_cell.y)
-
-                while not changed and bug < index2 - index1:
-                    bug += 1
-                    next_cell = tempest.choose_next()
-                    tempest.move_to(next_cell)
-                    if next_cell == element:
-                        for i in range(len(mutant_part_2) - 1):
-                            tempest.stack.append(mutant_part_2[i])
-                        tempest.current_cell = tempest.stack[-1]
-                        tempest.current_index = Cell.find_index(tempest.current_cell.x, tempest.current_cell.y)
-                        changed = True
-
-                if changed:
-                    mutant.stack = tempest.stack
-                    mutant.current_cell = tempest.current_cell
-                    mutant.current_index = tempest.current_index
+                mutant.stack = mutant_part_1 + mutant_part_2

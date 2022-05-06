@@ -19,7 +19,7 @@ class MazeSolver:
         self.__solution_drawn = False
         self.avg_values = []
         self.__maze = Maze(show=self.__SHOW_MAZE_GENERATION)
-        self.__MAX_ITERATION = 1 / TILE ** 0.95 * 12500
+        self.__MAX_ITERATION = 1 / TILE ** 0.90 * 15000
         self.__population = Population(self.__maze)
         self.fitnessValues = [individual.individual_fitness for individual in self.__population.individuals]
 
