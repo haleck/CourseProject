@@ -3,14 +3,19 @@ from settings import *
 
 
 class UI:
-    def __init__(self):
+    def __init__(self, maze=None):
         self.screen = pygame.display.get_surface()
+        self.maze = maze
 
         # Определение шрифтов
         self.f_sys = pygame.font.SysFont(FONT, 54)
         self.f_population_input = pygame.font.SysFont(FONT, 36)
         self.f_start_and_end = pygame.font.SysFont(FONT, round(TILE * 0.75))
         self.f_small = pygame.font.SysFont(FONT, 28)
+
+    # Отрисовка лабиринта
+    def show_maze(self):
+        [cell.draw() for cell in self.maze.grid_cells]
 
     # Отрисовка точек конца и начала лабиринта
     def show_end_and_start_points(self, cell_finish):
@@ -22,6 +27,9 @@ class UI:
         pos_start = text_start.get_rect(center=(TILE / 2, TILE / 2 + TOP_PADDING))
         self.screen.blit(text_start, pos_start)
         self.screen.blit(text_finish, pos_finish)
+
+    def show_header(self):
+        pygame.draw.rect(self.screen, HEADER_COLOR, (0, 0, WIDTH, TOP_PADDING))
 
     def show_header_buttons(self, first_btn_text=None, second_btn_text=None, third_btn_text=None):
         f_small = pygame.font.SysFont(FONT, 28)

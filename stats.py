@@ -1,13 +1,10 @@
 from collections import Counter
 
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.backends.backend_agg as agg
 import pylab
 
 from genetic import Individual
-from settings import *
-import pygame
 from ui import *
 
 
@@ -20,7 +17,7 @@ class StatSurface:
 
         self.UI = UI()
 
-    def draw_stat(self):
+    def show_stat(self):
         length_text = self.UI.f_sys.render(f'Length leader way: {self.length}', True, STROKE_COLOR, MAIN_BG)
         turns_text = self.UI.f_population_input.render(f'Number of turns: {self.turns}', True, STROKE_COLOR, MAIN_BG)
         pos1 = length_text.get_rect(center=(WIDTH / 2, HEIGHT // 1.5 + TOP_PADDING))
@@ -29,7 +26,7 @@ class StatSurface:
         self.sc.blit(turns_text, pos2)
         pygame.display.flip()
 
-    def draw_plot(self):
+    def show_plot(self):
         plt.rcParams.update({
             "lines.linewidth": "1.8",
             "axes.prop_cycle": plt.cycler('color', ['white']),
@@ -68,12 +65,12 @@ class StatSurface:
         self.sc.blit(surf, (200, TOP_PADDING + 30))
         pygame.display.flip()
 
-    def draw_header(self):
+    def show_header(self):
         pygame.draw.rect(self.sc, HEADER_COLOR, (0, 0, WIDTH, TOP_PADDING))
         self.UI.show_header_buttons(first_btn_text='Back to maze', third_btn_text='Go to menu')
 
-    def draw(self):
-        self.draw_plot()
+    def show(self):
+        self.show_plot()
         stop = False
         while not stop:
             for event in pygame.event.get():
@@ -85,8 +82,8 @@ class StatSurface:
                         return 'back'
                     if WIDTH / 10 * 6.6666 + 5 <= event.pos[0] <= WIDTH - 5 and 5 <= event.pos[1] <= TOP_PADDING - 10:
                         return 'exit'
-            self.draw_header()
-            self.draw_stat()
+            self.show_header()
+            self.show_stat()
             pygame.display.update()
             pygame.time.Clock().tick(30)
 
