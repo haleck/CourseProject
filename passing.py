@@ -18,12 +18,11 @@ class MazeSolver:
         self.__SHOW_MAZE_GENERATION = SHOW_MAZE_GENERATION
         self.__solution_drawn = False
         self.avg_values = []
-        self.__maze = Maze(show=self.__SHOW_MAZE_GENERATION)
         self.__MAX_ITERATION = 1 / TILE ** 0.90 * 15000
-        self.__population = Population(self.__maze)
-        self.fitnessValues = [individual.individual_fitness for individual in self.__population.individuals]
-
-        self.UI = UI(self.__maze)
+        self.__maze = None
+        self.UI = UI()
+        self.__population = None
+        self.fitnessValues = None
 
     def set_max_population(self ,MAX_POPULATION):
         self.__MAX_POPULATION = MAX_POPULATION
@@ -200,6 +199,11 @@ class MazeSolver:
 
     # Главная функция выполения алгоритма
     def start_passing(self):
+        self.__maze = Maze(show=self.__SHOW_MAZE_GENERATION)
+        self.UI = UI(self.__maze)
+        self.__population = Population(self.__maze)
+        self.fitnessValues = [individual.individual_fitness for individual in self.__population.individuals]
+
         self.print_genetic_info()
 
         # Эволюционный процесс
