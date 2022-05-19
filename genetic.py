@@ -45,7 +45,7 @@ class Individual:
 
         return choice(possible_cells)
 
-    def move_to(self, next_cell: Cell, add=True, draw_the_way=False):
+    def move_to(self, next_cell: Cell, add=True):
         if self.current_cell == self.maze[FINISH]:
             return
         if add and self.current_cell != self.maze[0]:
@@ -73,10 +73,10 @@ class Individual:
         line_width = 3
 
         def draw_line_to_center(start_point):
-            pygame.draw.line(sc, color, start_point, center, line_width)
+            pygame.draw.line(Maze.UI.sc, color, start_point, center, line_width)
 
         def draw_line_to_end_point(end_point):
-            pygame.draw.line(sc, color, center, end_point, line_width)
+            pygame.draw.line(Maze.UI.sc, color, center, end_point, line_width)
             return
 
         if x_current - x_past == TILE:
@@ -119,7 +119,7 @@ class Individual:
 class Population:
     def __init__(self, maze):
         self.maze = maze
-        self.individuals = [Individual(maze) for i in range(DEFAULT_POPULATION_SIZE)]
+        self.individuals = [Individual(maze) for _ in range(DEFAULT_POPULATION_SIZE)]
 
     def clone(self, individual: Individual):
         new_fly = Individual(self.maze)

@@ -1,13 +1,7 @@
 import pygame
 from settings import *
 from random import choice
-
-pygame.init()
-sc = pygame.display.set_mode(RES)
-clock = pygame.time.Clock()
-pygame.display.set_caption('Maze solver')
-pygame_icon = pygame.image.load('img/logo.png')
-pygame.display.set_icon(pygame_icon)
+from ui import *
 
 
 class Cell:
@@ -20,22 +14,22 @@ class Cell:
     def draw_current_cell(self, color=ACTIVE_COLOR):
         x = self.x * TILE
         y = self.y * TILE
-        pygame.draw.rect(sc, pygame.Color(color), (x + 8, y + 8 + TOP_PADDING, TILE - 16, TILE - 16))
+        pygame.draw.rect(Maze.UI.sc, pygame.Color(color), (x + 8, y + 8 + TOP_PADDING, TILE - 16, TILE - 16))
 
     def draw(self):
         x = self.x * TILE
         y = self.y * TILE + TOP_PADDING
         if self.visited:
-            pygame.draw.rect(sc, MAIN_BG, (x, y, TILE, TILE))
+            pygame.draw.rect(Maze.UI.sc, MAIN_BG, (x, y, TILE, TILE))
 
         if self.walls['top']:
-            pygame.draw.line(sc, STROKE_COLOR, (x, y), (x + TILE, y), 1)
+            pygame.draw.line(Maze.UI.sc, STROKE_COLOR, (x, y), (x + TILE, y), 1)
         if self.walls['right']:
-            pygame.draw.line(sc, STROKE_COLOR, (x + TILE, y), (x + TILE, y + TILE), 1)
+            pygame.draw.line(Maze.UI.sc, STROKE_COLOR, (x + TILE, y), (x + TILE, y + TILE), 1)
         if self.walls['bottom']:
-            pygame.draw.line(sc, STROKE_COLOR, (x, y + TILE), (x + TILE, y + TILE), 1)
+            pygame.draw.line(Maze.UI.sc, STROKE_COLOR, (x, y + TILE), (x + TILE, y + TILE), 1)
         if self.walls['left']:
-            pygame.draw.line(sc, STROKE_COLOR, (x, y), (x, y + TILE), 1)
+            pygame.draw.line(Maze.UI.sc, STROKE_COLOR, (x, y), (x, y + TILE), 1)
 
     @staticmethod
     def find_index(x, y):
@@ -67,6 +61,8 @@ class Cell:
 
 
 class Maze:
+    UI = UI()
+
     def __init__(self, show=False):
         self.grid_cells = [Cell(col, row) for row in range(rows) for col in range(cols)]
         self.current_cell = self.grid_cells[0]
@@ -89,11 +85,11 @@ class Maze:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         exit()
-                sc.fill((5, 5, 5))
-                pygame.draw.rect(sc, (47, 48, 51), (0, 0, WIDTH, TOP_PADDING))
+                Maze.UI.sc.fill((5, 5, 5))
+                pygame.draw.rect(Maze.UI.sc, (47, 48, 51), (0, 0, WIDTH, TOP_PADDING))
                 [cell.draw() for cell in self.grid_cells]
                 self.current_cell.draw_current_cell()
-                clock.tick(9999)
+                Maze.UI.clock.tick(9999)
                 pygame.display.flip()
 
     def __call__(self, *args, **kwargs):

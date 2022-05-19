@@ -86,5 +86,3 @@ class StatSurface:
             self.show_stat()
             pygame.display.update()
             pygame.time.Clock().tick(30)
-
-
