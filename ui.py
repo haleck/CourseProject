@@ -8,7 +8,10 @@ class UI:
         self.sc = pygame.display.set_mode(RES)
         self.clock = pygame.time.Clock()
         pygame.display.set_caption('Maze solver')
-        pygame_icon = pygame.image.load('img/logo.png')
+        try:
+            pygame_icon = pygame.image.load('img/logo.png')
+        except FileNotFoundError:
+            pygame_icon = pygame.image.load('../img/logo.png')
         pygame.display.set_icon(pygame_icon)
 
         self.screen = pygame.display.get_surface()

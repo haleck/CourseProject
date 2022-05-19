@@ -43,6 +43,15 @@ class MazeSolver:
         self.__SHOW_MAZE_GENERATION = True if value[1] == 2 else False
         return
 
+    def set_maze(self, maze):
+        self.__maze = maze
+
+    def get_population(self):
+        return self.__population.individuals
+
+    def set_population(self, population):
+        self.__population = population
+
     # Выполнение шагов всеми индивидуумами
     def iteration_loop(self):
         iteration_counter = 0
@@ -73,7 +82,7 @@ class MazeSolver:
             iteration_counter += 1
 
     # По популяции класса отбирает лучшую особь
-    def define_leader(self):
+    def define_leader(self) -> Individual:
         leader = min(self.__population.individuals, key=lambda indi: indi.individual_fitness)
 
         # Удаление нулевых движений

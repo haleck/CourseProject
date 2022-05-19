@@ -3,7 +3,7 @@ from random import choice, randint, random
 
 
 class Individual:
-    def __init__(self, maze):
+    def __init__(self, maze) -> object:
         self.maze = maze
         self.current_cell = maze[0]
         self.current_index = 0
@@ -14,7 +14,7 @@ class Individual:
     def fitness(self):
         return self.maze[FINISH].x - self.current_cell.x + self.maze[FINISH].y - self.current_cell.y + self.route * 0.1
 
-    def choose_next(self):
+    def choose_next(self) -> Cell:
         possible_cells = []
         found = False
 
@@ -122,12 +122,12 @@ class Population:
         self.individuals = [Individual(maze) for _ in range(DEFAULT_POPULATION_SIZE)]
 
     def clone(self, individual: Individual):
-        new_fly = Individual(self.maze)
-        new_fly.current_cell = individual.current_cell
-        new_fly.stack[:] = individual.stack
-        new_fly.individual_fitness = individual.individual_fitness
-        new_fly.route = individual.route
-        return new_fly
+        new_individual = Individual(self.maze)
+        new_individual.current_cell = individual.current_cell
+        new_individual.stack[:] = individual.stack
+        new_individual.individual_fitness = individual.individual_fitness
+        new_individual.route = individual.route
+        return new_individual
 
     @staticmethod
     def sel_tournament(population, p_len):
@@ -150,12 +150,9 @@ class Population:
             if child2.stack[i] == child1.stack[i]:
                 equal.append(i)
         if len(equal) >= 2:
-            point1 = choice(equal)
-            equal.remove(point1)
-            point2 = choice(equal)
-            equal.remove(point2)
-            child1.stack[point1:point2], child2.stack[point1:point2] = child2.stack[point1:point2], child1.stack[
-                                                                                                    point1:point2]
+            point1 = equal[0]
+            point2 = equal[1]
+            child1.stack[point1:point2], child2.stack[point1:point2] = child2.stack[point1:point2], child1.stack[point1:point2]
 
     def mut(self, mutant: Individual):
         if random() <= 0.2:

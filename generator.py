@@ -6,6 +6,8 @@ from ui import *
 
 class Cell:
     def __init__(self, x, y):
+        if x < 0 or y < 0:
+            raise TypeError('Координаты клетки не могут быть отрицательными числами')
         self.x = x
         self.y = y
         self.walls = {'top': True, 'right': True, 'bottom': True, 'left': True}
@@ -38,7 +40,10 @@ class Cell:
     def check_cell(self, x, y):
         if x < 0 or x > cols - 1 or y < 0 or y > rows - 1:
             return False
-        return self.grid_cells[Cell.find_index(x, y)]
+        try:
+            return self.grid_cells[Cell.find_index(x, y)]
+        except AttributeError:
+            raise AttributeError('Не задано поле лабиринта')
 
     def check_neighbors(self, grid_cells):
         self.grid_cells = grid_cells

@@ -19,7 +19,7 @@ class StatSurface:
 
     def show_stat(self):
         length_text = self.UI.f_sys.render(f'Length leader way: {self.length}', True, STROKE_COLOR, MAIN_BG)
-        turns_text = self.UI.f_population_input.render(f'Number of turns: {self.turns}', True, STROKE_COLOR, MAIN_BG)
+        turns_text = self.UI.f_population_input.render(f'Number of turns: {self.turns if self.turns != 1 else 0}', True, STROKE_COLOR, MAIN_BG)
         pos1 = length_text.get_rect(center=(WIDTH / 2, HEIGHT // 1.5 + TOP_PADDING))
         pos2 = turns_text.get_rect(center=(WIDTH / 2, HEIGHT // 1.5 + 45 + TOP_PADDING))
         self.sc.blit(length_text, pos1)
