@@ -1,7 +1,5 @@
 from unittest import TestCase, main
-from generator import *
 from genetic import *
-from settings import *
 
 
 class MazeTest(TestCase):

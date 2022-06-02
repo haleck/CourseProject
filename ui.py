@@ -63,3 +63,22 @@ class UI:
             third_btn = f_small.render(third_btn_text, True, (180, 180, 180))
             pos_third_btn = third_btn.get_rect(center=(WIDTH * 8.3333 / 10, TOP_PADDING / 2))
             self.screen.blit(third_btn, pos_third_btn)
+
+    def show_processing(self, n_dots=0):
+        text_processing = self.f_small.render(f'Processing' + '.' * n_dots, True, WHITE)
+        pos_text_processing = text_processing.get_rect(center=(WIDTH / 2, TOP_PADDING / 2))
+        self.sc.blit(text_processing, pos_text_processing)
+
+    def show_population_progress(self, iteration_counter, population_number, max_population, max_iteration):
+        sc_text = self.f_sys.render(f'Individual development', True, WHITE, MAIN_BG)
+        population_text = self.f_population_input.render(
+            f'Population {population_number + 1}/{max_population}', True, WHITE, MAIN_BG)
+        iteration_text = self.f_small.render(f'Step {iteration_counter + 1}/{round(max_iteration)}', True, WHITE, MAIN_BG)
+        pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
+        pos2 = population_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30))
+        pos3 = iteration_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 80))
+        self.sc.fill(MAIN_BG)
+        self.sc.blit(sc_text, pos1)
+        self.sc.blit(population_text, pos2)
+        self.sc.blit(iteration_text, pos3)
+        pygame.display.flip()

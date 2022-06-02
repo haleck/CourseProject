@@ -29,14 +29,6 @@ class CellTest(TestCase):
             cell.check_cell(1, 1)
         self.assertEqual('Не задано поле лабиринта', e.exception.args[0])
 
-    def test_availability_cell_on_maze(self):
-        cell = Cell(10, 21)
-
-        grid_cells = [Cell(col, row) for row in range(30) for col in range(30)]
-        cell.grid_cells = grid_cells
-
-        self.assertEqual(cell.check_cell(10, 20), grid_cells[Cell.find_index(10, 20)])
-
     def test_return_of_check_neighbors(self):
         cell = Cell(0, 0)
 

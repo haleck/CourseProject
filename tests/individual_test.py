@@ -2,7 +2,7 @@ from unittest import TestCase, main
 from genetic import *
 
 
-class MazeTest(TestCase):
+class IndividualTest(TestCase):
     def test_choose_next(self):
         pairs = []
         maze = Maze()

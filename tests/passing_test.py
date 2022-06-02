@@ -1,11 +1,8 @@
 from unittest import TestCase, main
-from generator import *
-from genetic import *
-from settings import *
 from passing import *
 
 
-class MazeTest(TestCase):
+class PassingTest(TestCase):
     def test_def_leader(self):
         executor = MazeSolver(max_population=1)
         maze = Maze()

@@ -17,7 +17,7 @@ BLACK_HEX = '#FFFFFF'
 FONT = 'antialias'
 
 # Settings of the screen
-WIDTH, HEIGHT = 1200, 881
+WIDTH, HEIGHT = 1400, 881
 RES = WIDTH, HEIGHT + TOP_PADDING
 TILE = 40
 cols, rows = WIDTH // TILE, HEIGHT // TILE

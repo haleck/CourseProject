@@ -8,7 +8,7 @@ from ui import *
 
 class MazeSolver:
     def __init__(self, max_population=DEFAULT_MAX_POPULATION, population_size=DEFAULT_POPULATION_SIZE,
-                 p_crossover=DEFAULT_P_CROSSOVER, p_mutation=DEFAULT_P_MUTATION):
+                 p_crossover=DEFAULT_P_CROSSOVER, p_mutation=DEFAULT_P_MUTATION) -> object:
         self.__MAX_POPULATION = max_population
         self.__POPULATION_SIZE = population_size
         self.__P_CROSSOVER = p_crossover
@@ -63,7 +63,7 @@ class MazeSolver:
             self.UI.show_header()
 
             # Отрисовка положения каждой особи
-            self.UI.show_maze() if self.__SHOW_EVOLUTION else self.show_population_progress(iteration_counter)
+            self.UI.show_maze() if self.__SHOW_EVOLUTION else self.UI.show_population_progress(iteration_counter, self.__population_number,self.__MAX_POPULATION ,self.__MAX_ITERATION)
 
             # Определение следующего шага для каждой особи
             for ind in self.__population.individuals:
@@ -112,28 +112,6 @@ class MazeSolver:
         mean_distance = sum(fresh_fitness_values) / len(self.__population.individuals)
         self.avg_values.append(mean_distance)
         print(f'Среднее значение функции приспособленности: {mean_distance}')
-
-    # Анимация процесса загрузки
-    def show_processing(self, n_dots=0):
-        text_processing = self.UI.f_small.render(f'Processing' + '.' * n_dots, True, WHITE)
-        pos_text_processing = text_processing.get_rect(center=(WIDTH / 2, TOP_PADDING / 2))
-        Maze.UI.sc.blit(text_processing, pos_text_processing)
-
-    # Выводит на экран стадию эволюции
-    def show_population_progress(self, iteration_counter):
-        sc_text = self.UI.f_sys.render(f'Individual development', True, WHITE, MAIN_BG)
-        population_text = self.UI.f_population_input.render(
-            f'Population {self.__population_number + 1}/{self.__MAX_POPULATION}', True, WHITE, MAIN_BG)
-        iteration_text = self.UI.f_small.render(f'Step {iteration_counter + 1}/{round(self.__MAX_ITERATION)}', True,
-                                                WHITE, MAIN_BG)
-        pos1 = sc_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 30))
-        pos2 = population_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30))
-        pos3 = iteration_text.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 80))
-        Maze.UI.sc.fill(MAIN_BG)
-        Maze.UI.sc.blit(sc_text, pos1)
-        Maze.UI.sc.blit(population_text, pos2)
-        Maze.UI.sc.blit(iteration_text, pos3)
-        pygame.display.flip()
 
     # Отрисовка лучшего решения
     def show_the_solution(self):
@@ -184,7 +162,7 @@ class MazeSolver:
                         if n_dots == 3:
                             n_dots = 0
                         n_dots += 1
-                    self.show_processing(n_dots)
+                    self.UI.show_processing(n_dots)
 
                     # Отрисовка движения лучшей особи
                     self.UI.show_maze()
